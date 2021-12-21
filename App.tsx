@@ -1,33 +1,17 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
+  ActivityIndicator,
+  Dimensions,
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   useColorScheme,
   View,
 } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import WebView from 'react-native-webview';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
+const {height} = Dimensions.get('window');
 const Section: React.FC<{
   title: string;
 }> = ({children, title}) => {
@@ -38,7 +22,7 @@ const Section: React.FC<{
         style={[
           styles.sectionTitle,
           {
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: isDarkMode ? '#fff' : '#000',
           },
         ]}>
         {title}
@@ -47,7 +31,7 @@ const Section: React.FC<{
         style={[
           styles.sectionDescription,
           {
-            color: isDarkMode ? Colors.light : Colors.dark,
+            color: isDarkMode ? '#fff' : '#000',
           },
         ]}>
         {children}
@@ -55,21 +39,26 @@ const Section: React.FC<{
     </View>
   );
 };
-const url='https://promise.com.sa/'
+const url = 'https://promise.com.sa/';
 const App = () => {
-  const [loading,setLoading]=useState(true)
+  const [loading, setLoading] = useState(true);
   const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    flex:1
-  };
-
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <SafeAreaView style={{flex: 1}}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <WebView source={{uri: url}}    onLoadStart={() => setLoading(true)}
-                    onLoad={() => setLoading(false)} />
+      <WebView
+        source={{uri: url}}
+        onLoadStart={() => setLoading(true)}
+        onLoad={() => {
+          SplashScreen.hide();
+          setLoading(false);
+        }}
+      />
+      <ActivityIndicator
+        color="#C4044C"
+        animating={loading}
+        style={{top: height * 0.5, alignSelf: 'center', position: 'absolute'}}
+      />
     </SafeAreaView>
   );
 };
